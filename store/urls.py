@@ -15,6 +15,9 @@ from .views import (
     ProductListView,
     OrderListView,
     DeliveryListView,
+    update_delivery,
+    update_order,
+    update_product
 )
 
 urlpatterns = [
@@ -33,4 +36,9 @@ urlpatterns = [
     path('product-list/', ProductListView.as_view(), name='product-list'),
     path('order-list/', OrderListView.as_view(), name='order-list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
+
+    #edit path
+    path('create-delivery/<int:item_id>/', update_delivery, name='update-delivery'),
+    path('create-order/<int:item_id>/', update_order, name='update-order'),
+    path('create-product/<int:item_id>/', update_product, name='update-product'),
 ]

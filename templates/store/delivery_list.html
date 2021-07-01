@@ -50,11 +50,11 @@
                         <tbody>
                             {% if delivery %}
                             {% for delivery in delivery %}
-                            <tr>
+                            <tr class='clickable-row' data-href="">
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ delivery.order }}</td>
-                                <td>{{ delivery.courier_name }}</td>
-                                <td>{{ delivery.created_date }}</td>
+                                <td> <a href="{% url 'create-delivery' %}{{ delivery.id }}">{{ delivery.order }}</a></td>
+                                <td> <a href="{% url 'create-delivery' %}{{ delivery.id }}"> {{ delivery.courier_name }}</a></td>
+                                <td> <a href="{% url 'create-delivery' %}{{ delivery.id }}">{{ delivery.created_date }}</a></td>
                             </tr>
                             {% endfor %}
                             {% else %}
@@ -70,3 +70,11 @@
     
 </div>
 {% endblock content %}
+
+<script>
+    jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+    });
+</script>

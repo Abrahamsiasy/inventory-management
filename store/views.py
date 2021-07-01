@@ -146,6 +146,7 @@ def create_product(request):
     return render(request, 'store/create_product.html', context)
 
 
+
 class ProductListView(ListView):
     model = Product
     template_name = 'store/product_list.html'
@@ -183,6 +184,39 @@ def create_order(request):
     return render(request, 'store/create_order.html', context)
 
 
+
+# Edit order views
+@login_required(login_url='login')
+def update_order(request,item_id):
+    forms = OrderForm()
+    order_object = Order.objects.get(id=item_id)
+    if request.method == 'POST':
+        forms = OrderForm(request.POST or None, instance=order_object)
+        if forms.is_valid():
+            supplier = forms.cleaned_data['supplier']
+            product = forms.cleaned_data['product']
+            design = forms.cleaned_data['design']
+            amount = forms.cleaned_data['amount']
+            buyer = forms.cleaned_data['buyer']
+            type = forms.cleaned_data['type']
+            drop = forms.cleaned_data['drop']
+            Order.objects.create(
+                supplier=supplier,
+                product=product,
+                design=design,
+                amount=amount,
+                buyer=buyer,
+                type=type,
+                drop=drop,
+                status='pending'
+            )
+            return redirect('order-list')
+    context = {
+        'form': forms,
+        'order_object':order_object
+    }
+    return render(request, 'store/create_order.html', context)
+
 class OrderListView(ListView):
     model = Order
     template_name = 'store/order_list.html'
@@ -207,6 +241,37 @@ def create_delivery(request):
     }
     return render(request, 'store/create_delivery.html', context)
 
+# Delivery edit views
+@login_required(login_url='login')
+def update_delivery(request, item_id):
+    forms = DeliveryForm()
+    delivery_object = Delivery.objects.get(id=item_id)
+    if request.method == 'POST':
+        forms = DeliveryForm(request.POST or None, instance=delivery_object)
+        if forms.is_valid():
+            forms.save()
+            return redirect('delivery-list')
+    context = {
+        'form': forms,
+        'delivery_object':delivery_object
+    }
+    return render(request, 'store/create_delivery.html', context)
+
+# update Product views
+@login_required(login_url='login')
+def update_product(request, item_id):
+    forms = ProductForm()
+    product_object = Product.objects.get(id=item_id)
+    if request.method == 'POST':
+        forms = ProductForm(request.POST or None, instance=product_object)
+        if forms.is_valid():
+            forms.save()
+            return redirect('product-list')
+    context = {
+        'form': forms,
+        'product_object':product_object
+    }
+    return render(request, 'store/create_product.html', context)
 
 class DeliveryListView(ListView):
     model = Delivery
