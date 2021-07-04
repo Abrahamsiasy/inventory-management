@@ -41,4 +41,5 @@ urlpatterns = [
     path('create-delivery/<int:item_id>/', update_delivery, name='update-delivery'),
     path('create-order/<int:item_id>/', update_order, name='update-order'),
     path('create-product/<int:item_id>/', update_product, name='update-product'),
+
 ]
