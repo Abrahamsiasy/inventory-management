@@ -49,10 +49,13 @@ INSTALLED_APPS = [
 #    'whitenoise.middleware.WhiteNoiseMiddleware'
 #)
     
-
+MIDDLEWARE_CLASSES = (
+    # Simplified static file serving.
+    # https://warehouse.python.org/project/whitenoise/
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'https://warehouse.python.org/project/whitenoise/',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
