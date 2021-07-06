@@ -36,9 +36,19 @@
             <div class="card-body">
                 <h4 class="box-title">Delivery List </h4>
             </div>
+                <script>
+               $(document).ready(function() {
+                   $('#examplede').DataTable( {
+                       dom: 'Bfrtip',
+                       buttons: [
+                           'copy', 'csv', 'excel', 'pdf', 'print'
+                       ]
+                   } );
+               } );
+           </script>
             <div class="card-body--">
                 <div class="table-stats order-table ov-h">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="examplede">
                         <thead class="thead-dark">
                             <tr>
                                 <th class="serial">#</th>
