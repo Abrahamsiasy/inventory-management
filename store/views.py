@@ -104,7 +104,33 @@ def create_type(request):
     }
     return render(request, 'store/create_type.html', context)
 
+#to be
+def list_order(request):
+    form_class = orderearchForm
+    model = Profile
+    template_name = 'pages/profile/list_order.html'
+    paginate_by = 10
 
+    form = form_class(request.POST or None)
+    if form.is_valid():
+        profile_list = model.objects.filter(name__icontains=form.cleaned_data['name'])
+    else:
+        profile_list = model.objects.all()
+
+    paginator = Paginator(profile_list, 10) # Show 10 contacts per page
+    page = request.GET.get('page')
+    try:
+        order = paginator.page(page)
+    except PageNotAnInteger:
+        order = paginator.page(1)
+    except EmptyPage:
+        order = paginator.page(paginator.num_pages)
+
+    return render_to_response(template_name, 
+            {'form': form, 'order': suppliers,}, 
+            context_instance=RequestContext(request))
+
+#to be
 class TypeListView(ListView):
     model = Type
     template_name = 'store/type_list.html'
@@ -227,7 +253,35 @@ class OrderListView(ListView):
         context['order'] = Order.objects.all().order_by('-id')
         return context
 
+#to be 
+class ProfileList(ListView):
+    model = Order
+    #form_class = orderearchForm
+    context_object_name = 'order'
+    template_name = 'store/create_order.html'
+    order = []
 
+
+    def post(self, request, *args, **kwargs):
+        self.show_results = False
+        self.object_list = self.get_queryset()
+        form = form_class(self.request.POST or None)
+        if form.is_valid():
+            self.show_results = True
+            self.order = Profile.objects.filter(name__icontains=form.cleaned_data['name'])
+        else:
+            self.order = Profile.objects.all()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileList, self).get_context_data(**kwargs)
+        if not self.order:
+            self.order = Profile.objects.all()
+        context.update({
+            'order': self.order
+        })
+        return context
+#to be
 # Delivery views
 @login_required(login_url='login')
 def create_delivery(request):
